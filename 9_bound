@@ -1,0 +1,200 @@
+
+def print_board(board, n):
+
+    for i in range(n):
+
+        for j in range(n):
+
+            if board[i][j] == 1:
+                print("Q", end=" ")
+
+            else:
+                print(".", end=" ")
+
+        print()
+
+
+
+
+def is_safe(board, row, col, n):
+
+    
+    for i in range(row):
+
+        if board[i][col] == 1:
+            return False
+
+    
+    i = row - 1
+    j = col - 1
+
+    while i >= 0 and j >= 0:
+
+        if board[i][j] == 1:
+            return False
+
+        i -= 1
+        j -= 1
+
+    
+    i = row - 1
+    j = col + 1
+
+    while i >= 0 and j < n:
+
+        if board[i][j] == 1:
+            return False
+
+        i -= 1
+        j += 1
+
+    return True
+
+
+
+
+def solve_backtracking(board, row, n):
+
+    
+    if row == n:
+        return True
+
+    
+    for col in range(n):
+
+        if is_safe(board, row, col, n):
+
+            
+            board[row][col] = 1
+
+            
+            if solve_backtracking(board, row + 1, n):
+                return True
+
+            
+            board[row][col] = 0
+
+    return False
+
+
+
+def solve_branch_bound(
+    board,
+    row,
+    n,
+    columns,
+    left_diag,
+    right_diag
+):
+
+    
+    if row == n:
+        return True
+
+    for col in range(n):
+
+        
+        if (
+            columns[col] == 0 and
+            left_diag[row - col + n - 1] == 0 and
+            right_diag[row + col] == 0
+        ):
+
+            
+            board[row][col] = 1
+
+            columns[col] = 1
+            left_diag[row - col + n - 1] = 1
+            right_diag[row + col] = 1
+
+            
+            if solve_branch_bound(
+                board,
+                row + 1,
+                n,
+                columns,
+                left_diag,
+                right_diag
+            ):
+                return True
+
+            
+            board[row][col] = 0
+
+            columns[col] = 0
+            left_diag[row - col + n - 1] = 0
+            right_diag[row + col] = 0
+
+    return False
+
+
+
+
+while True:
+
+    print("\n========== N-QUEENS PROBLEM ==========")
+    print("1. Backtracking")
+    print("2. Branch and Bound")
+    print("3. Exit")
+
+    choice = int(input("\nEnter your choice: "))
+
+
+
+    if choice == 1 or choice == 2:
+
+        n = int(input("\nEnter value of N: "))
+
+        board = [[0 for _ in range(n)] for _ in range(n)]
+
+
+
+    if choice == 1:
+
+        if solve_backtracking(board, 0, n):
+
+            print("\nSolution using Backtracking:\n")
+
+            print_board(board, n)
+
+        else:
+
+            print("\nNo Solution Exists")
+
+
+
+    elif choice == 2:
+
+        columns = [0] * n
+
+        left_diag = [0] * (2 * n - 1)
+
+        right_diag = [0] * (2 * n - 1)
+
+        if solve_branch_bound(
+            board,
+            0,
+            n,
+            columns,
+            left_diag,
+            right_diag
+        ):
+
+            print("\nSolution using Branch and Bound:\n")
+
+            print_board(board, n)
+
+        else:
+
+            print("\nNo Solution Exists")
+
+
+
+    elif choice == 3:
+
+        print("\nProgram Exited")
+        break
+
+    else:
+
+        print("\nInvalid Choice")
