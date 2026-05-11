@@ -1,0 +1,171 @@
+
+
+import heapq
+
+
+parent = []
+
+
+def find(i):
+
+    while parent[i] != i:
+        i = parent[i]
+
+    return i
+
+
+def union(a, b):
+
+    x = find(a)
+    y = find(b)
+
+    parent[x] = y
+
+
+def kruskal_mst(graph, n):
+
+    global parent
+
+    edges = []
+
+
+    for i in range(n):
+
+        for j in range(i + 1, n):
+
+            if graph[i][j] != 0:
+
+                edges.append((graph[i][j], i, j))
+
+
+    edges.sort()
+
+  
+    parent = [i for i in range(n)]
+
+    edge_count = 0
+    total_cost = 0
+
+    print("\nEdges in Kruskal's MST:\n")
+
+    for edge in edges:
+
+        weight, u, v = edge
+
+
+        if find(u) != find(v):
+
+            union(u, v)
+
+            print(u, "-", v, ":", weight)
+
+            total_cost += weight
+
+            edge_count += 1
+
+
+        if edge_count == n - 1:
+            break
+
+    print("\nTotal Cost =", total_cost)
+
+
+
+
+def dijkstra(graph, start):
+
+
+    distances = {vertex: float('inf') for vertex in graph}
+
+    distances[start] = 0
+
+
+    pq = [(0, start)]
+
+    while pq:
+
+        current_distance, current_vertex = heapq.heappop(pq)
+
+        
+        for neighbor, weight in graph[current_vertex]:
+
+            distance = current_distance + weight
+
+            
+            if distance < distances[neighbor]:
+
+                distances[neighbor] = distance
+
+                heapq.heappush(pq, (distance, neighbor))
+
+    print("\nShortest Distances:\n")
+
+    for vertex in distances:
+
+        print(start, "->", vertex, "=", distances[vertex])
+
+
+
+while True:
+
+    print("\n========== GREEDY ALGORITHMS ==========")
+    print("1. Kruskal's MST Algorithm")
+    print("2. Dijkstra's Shortest Path Algorithm")
+    print("3. Exit")
+
+    choice = int(input("\nEnter your choice: "))
+
+
+
+    if choice == 1:
+
+        n = int(input("\nEnter number of vertices: "))
+
+        graph = []
+
+        print("\nEnter adjacency matrix:")
+
+        for i in range(n):
+
+            row = list(map(int, input().split()))
+            graph.append(row)
+
+        kruskal_mst(graph, n)
+
+
+    elif choice == 2:
+
+        graph = {}
+
+        n = int(input("\nEnter number of vertices: "))
+
+        for i in range(n):
+
+            vertex = input("Enter vertex name: ")
+
+            neighbors = []
+
+            m = int(input(f"Enter number of neighbors of {vertex}: "))
+
+            for j in range(m):
+
+                neighbor = input("Enter neighbor vertex: ")
+                weight = int(input("Enter edge weight: "))
+
+                neighbors.append((neighbor, weight))
+
+            graph[vertex] = neighbors
+
+        start = input("\nEnter source vertex: ")
+
+        dijkstra(graph, start)
+
+
+    elif choice == 3:
+
+        print("\nProgram Exited")
+        break
+
+    else:
+
+        print("\nInvalid Choice")
