@@ -1,0 +1,28 @@
+graph = {}
+
+n = int(input("Enter number of vertices: "))
+
+for i in range(n):
+    node = input("Enter Node: ")
+    neighbor = input(f"Enter neighboring nodes of {node}: ").split()
+    graph[node] = neighbor
+
+start = input("Enter Starting vertex: ")
+
+def bfs(graph, start):
+    visited = set([start])
+    queue = [start]
+
+    print("BFS Traversal:", end=" ")
+
+    while queue:
+        vertex = queue.pop(0)
+        print(vertex, end=" ")
+
+        for neighbor in graph.get(vertex, []):
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+    print()
+
+bfs(graph, start)
