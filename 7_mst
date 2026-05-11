@@ -1,0 +1,164 @@
+
+
+def prim_mst(graph, n):
+
+    INF = 9999999
+
+    selected = [False] * n
+
+    
+    selected[0] = True
+
+    edge_count = 0
+    total_cost = 0
+
+    print("\nEdges in Prim's MST:\n")
+
+    while edge_count < n - 1:
+
+        minimum = INF
+        x = 0
+        y = 0
+
+        for i in range(n):
+
+            if selected[i]:
+
+                for j in range(n):
+
+                    if (not selected[j]) and graph[i][j]:
+
+                        if minimum > graph[i][j]:
+
+                            minimum = graph[i][j]
+                            x = i
+                            y = j
+
+        print(x, "-", y, ":", graph[x][y])
+
+        total_cost += graph[x][y]
+
+        selected[y] = True
+
+        edge_count += 1
+
+    print("\nTotal Cost =", total_cost)
+
+
+parent = []
+
+
+
+def find(i):
+
+    while parent[i] != i:
+        i = parent[i]
+
+    return i
+
+
+
+def union(a, b):
+
+    x = find(a)
+    y = find(b)
+
+    parent[x] = y
+
+
+def kruskal_mst(graph, n):
+
+    global parent
+
+    edges = []
+
+    
+    for i in range(n):
+
+        for j in range(i + 1, n):
+
+            if graph[i][j] != 0:
+
+                edges.append((graph[i][j], i, j))
+
+    
+    edges.sort()
+
+   
+    parent = [i for i in range(n)]
+
+    edge_count = 0
+    total_cost = 0
+
+    print("\nEdges in Kruskal's MST:\n")
+
+    for edge in edges:
+
+        weight, u, v = edge
+
+       
+        if find(u) != find(v):
+
+            union(u, v)
+
+            print(u, "-", v, ":", weight)
+
+            total_cost += weight
+
+            edge_count += 1
+
+        if edge_count == n - 1:
+            break
+
+    print("\nTotal Cost =", total_cost)
+
+
+
+
+while True:
+
+    print("\n========== MST ALGORITHMS ==========")
+    print("1. Prim's Algorithm")
+    print("2. Kruskal's Algorithm")
+    print("3. Exit")
+
+    choice = int(input("\nEnter your choice: "))
+
+
+
+    if choice == 1 or choice == 2:
+
+        n = int(input("\nEnter number of vertices: "))
+
+        graph = []
+
+        print("\nEnter adjacency matrix:")
+
+        for i in range(n):
+
+            row = list(map(int, input().split()))
+            graph.append(row)
+
+
+
+    if choice == 1:
+
+        prim_mst(graph, n)
+
+
+
+    elif choice == 2:
+
+        kruskal_mst(graph, n)
+
+
+
+    elif choice == 3:
+
+        print("\nProgram Exited")
+        break
+
+    else:
+
+        if choice not in [1, 2, 3]:
+            print("\nInvalid Choice")
