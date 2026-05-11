@@ -1,0 +1,78 @@
+
+
+
+print("==========================================")
+print(" HOSPITAL AND MEDICAL EXPERT SYSTEM ")
+print("==========================================")
+
+print("\nAnswer the following questions with yes or no.\n")
+
+
+
+fever = input("Do you have fever? ").lower()
+
+
+cough = input("Do you have cough? ").lower()
+
+
+headache = input("Do you have headache? ").lower()
+
+
+stomach = input("Do you have stomach pain? ").lower()
+
+
+chest = input("Do you have chest pain? ").lower()
+
+weakness = input("Do you feel weakness? ").lower()
+
+
+print("\n========== MEDICAL REPORT ==========\n")
+
+
+
+
+if fever == "yes" and cough == "yes" and headache == "yes":
+
+    print("Possible Disease : Flu")
+    print("Suggestion :")
+    print("- Take proper rest")
+    print("- Drink warm fluids")
+    print("- Consult a doctor if symptoms increase")
+
+
+elif stomach == "yes" and fever == "yes":
+
+    print("Possible Disease : Food Poisoning")
+    print("Suggestion :")
+    print("- Drink clean water")
+    print("- Avoid outside food")
+    print("- Visit nearby hospital")
+
+
+elif chest == "yes" and weakness == "yes":
+
+    print("Possible Disease : Heart-related Issue")
+    print("Suggestion :")
+    print("- Consult cardiologist immediately")
+    print("- Avoid heavy physical activity")
+
+
+elif fever == "yes" and weakness == "yes":
+
+    print("Possible Disease : Viral Fever")
+    print("Suggestion :")
+    print("- Take proper medicines")
+    print("- Stay hydrated")
+    print("- Take rest")
+
+# Healthy Condition
+else:
+
+    print("No major disease detected.")
+    print("You seem healthy.")
+    print("Maintain healthy lifestyle.")
+
+
+print("\n====================================")
+print(" Thank You for Using Expert System ")
+print("====================================")
