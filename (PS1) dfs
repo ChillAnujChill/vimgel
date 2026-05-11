@@ -1,0 +1,33 @@
+graph = {}
+
+n = int(input("Enter number of vertices: "))
+
+for i in range(n):
+    node = input("Enter Node: ")
+    neighbor = input(f"Enter neighboring nodes of {node}: ").split()
+    graph[node] = neighbor
+
+start = input("Enter Starting vertex: ")
+
+
+# 🔹 DFS
+def dfs(graph, start):
+    visited = set()
+    stack = [start]
+
+    print("DFS Traversal:", end=" ")
+
+    while stack:
+        vertex = stack.pop()
+
+        if vertex not in visited:
+            print(vertex, end=" ")
+            visited.add(vertex)
+
+            for neighbor in reversed(graph.get(vertex, [])):
+                if neighbor not in visited:
+                    stack.append(neighbor)
+    print()
+
+
+dfs(graph, start)
