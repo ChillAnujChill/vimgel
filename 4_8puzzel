@@ -1,0 +1,118 @@
+import heapq
+
+
+goal = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 0]
+]
+
+
+def heuristic(state):
+
+    misplaced = 0
+
+    for i in range(3):
+        for j in range(3):
+
+            if state[i][j] != 0 and state[i][j] != goal[i][j]:
+                misplaced += 1
+
+    return misplaced
+
+
+def find_zero(state):
+
+    for i in range(3):
+        for j in range(3):
+
+            if state[i][j] == 0:
+                return i, j
+
+
+def generate_moves(state):
+
+    neighbors = []
+
+    x, y = find_zero(state)
+
+    directions = [
+        (-1, 0),  # Up
+        (1, 0),   # Down
+        (0, -1),  # Left
+        (0, 1)    # Right
+    ]
+
+    for dx, dy in directions:
+
+        nx = x + dx
+        ny = y + dy
+
+        if 0 <= nx < 3 and 0 <= ny < 3:
+
+            
+            new_state = [row[:] for row in state]
+
+          
+            new_state[x][y], new_state[nx][ny] = \
+            new_state[nx][ny], new_state[x][y]
+
+            neighbors.append(new_state)
+
+    return neighbors
+
+def state_to_tuple(state):
+    return tuple(tuple(row) for row in state)
+
+def a_star(start):
+
+    pq = []
+
+    visited = set()
+
+    g = 0
+    h = heuristic(start)
+
+    heapq.heappush(pq, (g + h, g, start))
+
+    while pq:
+
+        f, g, current = heapq.heappop(pq)
+
+        if current == goal:
+            return current
+
+        visited.add(state_to_tuple(current))
+
+        for neighbor in generate_moves(current):
+
+            if state_to_tuple(neighbor) not in visited:
+
+                new_g = g + 1
+                new_h = heuristic(neighbor)
+
+                heapq.heappush(
+                    pq,
+                    (new_g + new_h, new_g, neighbor)
+                )
+
+    return None
+
+
+start = [
+    [1, 2, 3],
+    [4, 0, 6],
+    [7, 5, 8]
+]
+
+solution = a_star(start)
+
+if solution:
+
+    print("Goal State Reached:\n")
+
+    for row in solution:
+        print(row)
+
+else:
+    print("No Solution Found")
