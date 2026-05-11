@@ -1,34 +1,32 @@
-
 import heapq
 
 
+# =====================================================
+# DIJKSTRA ALGORITHM
+# =====================================================
+
 def dijkstra(graph, start):
 
-    
     distances = {vertex: float('inf') for vertex in graph}
 
     distances[start] = 0
 
-    
     pq = [(0, start)]
 
     while pq:
 
         current_distance, current_vertex = heapq.heappop(pq)
 
-        
         for neighbor, weight in graph[current_vertex]:
 
             distance = current_distance + weight
 
-            
             if distance < distances[neighbor]:
 
                 distances[neighbor] = distance
 
                 heapq.heappush(pq, (distance, neighbor))
 
-    
     print("\nShortest Distances from Source:\n")
 
     for vertex in distances:
@@ -36,16 +34,17 @@ def dijkstra(graph, start):
         print(start, "->", vertex, "=", distances[vertex])
 
 
+# =====================================================
+# JOB SCHEDULING
+# =====================================================
 
 def job_scheduling(jobs):
 
-    
+    # Sort according to profit
     jobs.sort(key=lambda x: x[2], reverse=True)
 
-   
     max_deadline = max(job[1] for job in jobs)
 
-    
     slots = [-1] * (max_deadline + 1)
 
     total_profit = 0
@@ -58,12 +57,12 @@ def job_scheduling(jobs):
         deadline = job[1]
         profit = job[2]
 
-        
         for j in range(deadline, 0, -1):
 
             if slots[j] == -1:
 
                 slots[j] = job_id
+
                 total_profit += profit
 
                 print(
@@ -80,7 +79,9 @@ def job_scheduling(jobs):
     print("\nTotal Profit =", total_profit)
 
 
-
+# =====================================================
+# MAIN MENU
+# =====================================================
 
 while True:
 
@@ -91,6 +92,9 @@ while True:
 
     choice = int(input("\nEnter your choice: "))
 
+    # =================================================
+    # DIJKSTRA INPUT
+    # =================================================
 
     if choice == 1:
 
@@ -98,18 +102,21 @@ while True:
 
         n = int(input("\nEnter number of vertices: "))
 
+        print("\nEnter vertices one by one")
+
         for i in range(n):
 
-            vertex = input("Enter vertex name: ")
+            vertex = input("\nEnter vertex: ")
 
             neighbors = []
 
-            m = int(input(f"Enter number of neighbors of {vertex}: "))
+            m = int(input("Enter number of neighbors: "))
 
             for j in range(m):
 
-                neighbor = input("Enter neighbor vertex: ")
-                weight = int(input("Enter edge weight: "))
+                neighbor = input("Neighbor vertex: ")
+
+                weight = int(input("Edge weight: "))
 
                 neighbors.append((neighbor, weight))
 
@@ -119,6 +126,9 @@ while True:
 
         dijkstra(graph, start)
 
+    # =================================================
+    # JOB SCHEDULING INPUT
+    # =================================================
 
     elif choice == 2:
 
@@ -126,18 +136,23 @@ while True:
 
         n = int(input("\nEnter number of jobs: "))
 
+        print("\nEnter Job Details")
+
         for i in range(n):
 
-            print("\nEnter details for Job", i + 1)
+            job_id = input("\nJob ID: ")
 
-            job_id = input("Job ID: ")
             deadline = int(input("Deadline: "))
+
             profit = int(input("Profit: "))
 
             jobs.append((job_id, deadline, profit))
 
         job_scheduling(jobs)
 
+    # =================================================
+    # EXIT
+    # =================================================
 
     elif choice == 3:
 
@@ -145,4 +160,5 @@ while True:
         break
 
     else:
+
         print("\nInvalid Choice")
