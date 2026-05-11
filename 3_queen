@@ -1,70 +1,154 @@
+# ---------------------------------------------------------
+# AI 3 : A* Algorithm for 4-Queens Problem
+# ---------------------------------------------------------
+
+import heapq
+
+
 N = 4
 
-board = [[0] * N for _ in range(N)]
 
+# =========================================================
+# HEURISTIC FUNCTION
+# Counts number of attacking queen pairs
+# =========================================================
 
-def safe(row, col):
+def heuristic(state):
 
-    # Check left side row
-    for i in range(col):
+    attacks = 0
 
-        if board[row][i] == 1:
-            return False
-
-    # Check upper left diagonal
-    i = row
-    j = col
-
-    while i >= 0 and j >= 0:
-
-        if board[i][j] == 1:
-            return False
-
-        i -= 1
-        j -= 1
-
-    # Check lower left diagonal
-    i = row
-    j = col
-
-    while i < N and j >= 0:
-
-        if board[i][j] == 1:
-            return False
-
-        i += 1
-        j -= 1
-
-    return True
-
-
-def solve(col):
-
-    # Base Case
-    if col >= N:
-        return True
-
-    # Try every row
     for i in range(N):
 
-        if safe(i, col):
+        for j in range(i + 1, N):
 
-            # Place Queen
-            board[i][col] = 1
+            # Same row attack
+            if state[i] == state[j]:
+                attacks += 1
 
-            # Recursive Call
-            if solve(col + 1):
-                return True
+            # Diagonal attack
+            if abs(state[i] - state[j]) == abs(i - j):
+                attacks += 1
 
-            # Backtracking
-            board[i][col] = 0
-
-    return False
+    return attacks
 
 
-# Function Call
-solve(0)
+# =========================================================
+# GENERATE NEXT STATES
+# =========================================================
 
-# Print Board
-for i in board:
-    print(i)
+def generate_neighbors(state):
+
+    neighbors = []
+
+    for col in range(N):
+
+        for row in range(N):
+
+            # Create new state
+            new_state = list(state)
+
+            # Move queen
+            new_state[col] = row
+
+            # Ignore same state
+            if new_state != list(state):
+
+                neighbors.append(tuple(new_state))
+
+    return neighbors
+
+
+# =========================================================
+# PRINT BOARD
+# =========================================================
+
+def print_board(state):
+
+    print("\nSolution Board:\n")
+
+    for row in range(N):
+
+        for col in range(N):
+
+            if state[col] == row:
+                print("Q", end=" ")
+
+            else:
+                print(".", end=" ")
+
+        print()
+
+
+# =========================================================
+# A* ALGORITHM
+# =========================================================
+
+def a_star():
+
+    # Initial State
+    initial_state = (0, 0, 0, 0)
+
+    # Priority Queue
+    pq = []
+
+    # Push initial state
+    heapq.heappush(
+        pq,
+        (
+            heuristic(initial_state),   # f(n)
+            0,                          # g(n)
+            initial_state
+        )
+    )
+
+    visited = set()
+
+    while pq:
+
+        f, g, current_state = heapq.heappop(pq)
+
+        # Goal Check
+        if heuristic(current_state) == 0:
+
+            print("\nGoal State Reached!")
+
+            print("\nState:", current_state)
+
+            print_board(current_state)
+
+            return
+
+        # Skip visited state
+        if current_state in visited:
+            continue
+
+        visited.add(current_state)
+
+        # Generate neighbors
+        neighbors = generate_neighbors(current_state)
+
+        for neighbor in neighbors:
+
+            if neighbor not in visited:
+
+                new_g = g + 1
+
+                new_f = new_g + heuristic(neighbor)
+
+                heapq.heappush(
+                    pq,
+                    (
+                        new_f,
+                        new_g,
+                        neighbor
+                    )
+                )
+
+    print("No Solution Found")
+
+
+# =========================================================
+# FUNCTION CALL
+# =========================================================
+
+a_star()
