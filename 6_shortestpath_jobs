@@ -1,0 +1,148 @@
+
+import heapq
+
+
+def dijkstra(graph, start):
+
+    
+    distances = {vertex: float('inf') for vertex in graph}
+
+    distances[start] = 0
+
+    
+    pq = [(0, start)]
+
+    while pq:
+
+        current_distance, current_vertex = heapq.heappop(pq)
+
+        
+        for neighbor, weight in graph[current_vertex]:
+
+            distance = current_distance + weight
+
+            
+            if distance < distances[neighbor]:
+
+                distances[neighbor] = distance
+
+                heapq.heappush(pq, (distance, neighbor))
+
+    
+    print("\nShortest Distances from Source:\n")
+
+    for vertex in distances:
+
+        print(start, "->", vertex, "=", distances[vertex])
+
+
+
+def job_scheduling(jobs):
+
+    
+    jobs.sort(key=lambda x: x[2], reverse=True)
+
+   
+    max_deadline = max(job[1] for job in jobs)
+
+    
+    slots = [-1] * (max_deadline + 1)
+
+    total_profit = 0
+
+    print("\nSelected Jobs:\n")
+
+    for job in jobs:
+
+        job_id = job[0]
+        deadline = job[1]
+        profit = job[2]
+
+        
+        for j in range(deadline, 0, -1):
+
+            if slots[j] == -1:
+
+                slots[j] = job_id
+                total_profit += profit
+
+                print(
+                    "Job:",
+                    job_id,
+                    " Deadline:",
+                    deadline,
+                    " Profit:",
+                    profit
+                )
+
+                break
+
+    print("\nTotal Profit =", total_profit)
+
+
+
+
+while True:
+
+    print("\n========== GREEDY ALGORITHMS ==========")
+    print("1. Single Source Shortest Path")
+    print("2. Job Scheduling Problem")
+    print("3. Exit")
+
+    choice = int(input("\nEnter your choice: "))
+
+
+    if choice == 1:
+
+        graph = {}
+
+        n = int(input("\nEnter number of vertices: "))
+
+        for i in range(n):
+
+            vertex = input("Enter vertex name: ")
+
+            neighbors = []
+
+            m = int(input(f"Enter number of neighbors of {vertex}: "))
+
+            for j in range(m):
+
+                neighbor = input("Enter neighbor vertex: ")
+                weight = int(input("Enter edge weight: "))
+
+                neighbors.append((neighbor, weight))
+
+            graph[vertex] = neighbors
+
+        start = input("\nEnter source vertex: ")
+
+        dijkstra(graph, start)
+
+
+    elif choice == 2:
+
+        jobs = []
+
+        n = int(input("\nEnter number of jobs: "))
+
+        for i in range(n):
+
+            print("\nEnter details for Job", i + 1)
+
+            job_id = input("Job ID: ")
+            deadline = int(input("Deadline: "))
+            profit = int(input("Profit: "))
+
+            jobs.append((job_id, deadline, profit))
+
+        job_scheduling(jobs)
+
+
+    elif choice == 3:
+
+        print("\nProgram Exited")
+        break
+
+    else:
+        print("\nInvalid Choice")
