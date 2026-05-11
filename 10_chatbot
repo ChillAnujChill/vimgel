@@ -1,0 +1,77 @@
+
+print("====================================")
+print(" Welcome to Online Shopping Chatbot ")
+print("====================================")
+
+print("\nType 'bye' to exit.\n")
+
+
+
+while True:
+
+    
+    user = input("You: ").lower()
+
+   
+    if user == "bye":
+
+        print("\nBot: Thank you for visiting.")
+        print("Bot: Have a nice day!")
+        break
+
+    
+    elif user in ["hi", "hello", "hey"]:
+
+        print("\nBot: Hello! Welcome to our store.")
+        print("Bot: How can I help you today?")
+
+    
+    elif "product" in user:
+
+        print("\nBot: We offer:")
+        print("Bot: 1. Mobiles")
+        print("Bot: 2. Laptops")
+        print("Bot: 3. Headphones")
+        print("Bot: 4. Smart Watches")
+
+    
+    elif "price" in user:
+
+        print("\nBot: Prices depend on the product.")
+        print("Bot: Please mention the product name.")
+
+    
+    elif "delivery" in user:
+
+        print("\nBot: Delivery usually takes 3 to 5 days.")
+
+    
+    elif "payment" in user:
+
+        print("\nBot: We support:")
+        print("Bot: - UPI")
+        print("Bot: - Debit Card")
+        print("Bot: - Credit Card")
+        print("Bot: - Cash on Delivery")
+
+    
+    elif "return" in user:
+
+        print("\nBot: Products can be returned within 7 days.")
+
+    
+    elif "contact" in user or "support" in user:
+
+        print("\nBot: You can contact us at:")
+        print("Bot: support@shop.com")
+
+    
+    elif "thank" in user:
+
+        print("\nBot: You're welcome!")
+
+    
+    else:
+
+        print("\nBot: Sorry, I didn't understand that.")
+        print("Bot: Please try another question.")
